@@ -32,6 +32,9 @@ const getWeather = function(city){
       console.log("event", weather);
       resolve(weather);
     });
+    weatherData.then(function(chups){
+      // something here
+    });
   });
 };
 

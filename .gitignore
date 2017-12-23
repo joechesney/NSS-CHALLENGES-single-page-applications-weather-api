@@ -1,5 +1,5 @@
 node_modules
 apiKey.json
-css/
-dist/
+css/main.css
+dist/bundle.js
 .sass-cache
