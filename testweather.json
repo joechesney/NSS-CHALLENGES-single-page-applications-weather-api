@@ -1,51 +1,94 @@
+
 {
-  "coord":
-    { "lon":-86.77,"lat":36.16},
-  "weather":
-  [
-    { 
-      "id":500,
-      "main":"Rain",
-      "description":"light rain",
-      "icon":"10n"
-    }, 
-    {
-      "id":701,
-      "main":"Mist",
-      "description":"mist",
-      "icon":"50n"
-    }
-  ],
-  "base":"stations",
-  "main":
-    {
-      "temp":287.77,
-      "pressure":1016,
-      "humidity":93,
-      "temp_min":287.15,
-      "temp_max":288.15
-    },
-  "visibility":14484,
-  "wind":
-    {
-      "speed":3.6,
-      "deg":180
-    },
-  "clouds":
-    {
-      "all":90
-    },
-  "dt":1513986960,
-  "sys":
-    {
-      "type":1,
-      "id":2532,
-      "message":0.0043,
-      "country":"US",
-      "sunrise":1514033723,
-      "sunset":1514068645
-    },
-  "id":4617305,
-  "name":"Nashville",
-  "cod":200
+  "response": {
+  "version":"0.1",
+  "termsofService":"http://www.wunderground.com/weather/api/d/terms.html",
+  "features": {
+  "conditions": 1
+  }
+	}
+  ,	"current_observation": {
+		"image": {
+		"url":"http://icons.wxug.com/graphics/wu2/logo_130x80.png",
+		"title":"Weather Underground",
+		"link":"http://www.wunderground.com"
+		},
+		"display_location": {
+		"full":"Nashville, TN",
+		"city":"Nashville",
+		"state":"TN",
+		"state_name":"Tennessee",
+		"country":"US",
+		"country_iso3166":"US",
+		"zip":"37201",
+		"magic":"1",
+		"wmo":"99999",
+		"latitude":"36.16999817",
+		"longitude":"-86.77999878",
+		"elevation":"139.9"
+		},
+		"observation_location": {
+		"full":"WQEC of TN, Nashville, Tennessee",
+		"city":"WQEC of TN, Nashville",
+		"state":"Tennessee",
+		"country":"US",
+		"country_iso3166":"US",
+		"latitude":"36.173122",
+		"longitude":"-86.739845",
+		"elevation":"518 ft"
+		},
+		"estimated": {
+		},
+		"station_id":"KTNNASHV210",
+		"observation_time":"Last Updated on December 25, 8:01 PM CST",
+		"observation_time_rfc822":"Mon, 25 Dec 2017 20:01:01 -0600",
+		"observation_epoch":"1514253661",
+		"local_time_rfc822":"Mon, 25 Dec 2017 20:14:42 -0600",
+		"local_epoch":"1514254482",
+		"local_tz_short":"CST",
+		"local_tz_long":"America/Chicago",
+		"local_tz_offset":"-0600",
+		"weather":"Overcast",
+		"temperature_string":"31.6 F (-0.2 C)",
+		"temp_f":31.6,
+		"temp_c":-0.2,
+		"relative_humidity":"61%",
+		"wind_string":"Calm",
+		"wind_dir":"NE",
+		"wind_degrees":36,
+		"wind_mph":0.0,
+		"wind_gust_mph":0,
+		"wind_kph":0,
+		"wind_gust_kph":0,
+		"pressure_mb":"1033",
+		"pressure_in":"30.51",
+		"pressure_trend":"+",
+		"dewpoint_string":"20 F (-7 C)",
+		"dewpoint_f":20,
+		"dewpoint_c":-7,
+		"heat_index_string":"NA",
+		"heat_index_f":"NA",
+		"heat_index_c":"NA",
+		"windchill_string":"32 F (0 C)",
+		"windchill_f":"32",
+		"windchill_c":"0",
+		"feelslike_string":"32 F (0 C)",
+		"feelslike_f":"32",
+		"feelslike_c":"0",
+		"visibility_mi":"10.0",
+		"visibility_km":"16.1",
+		"solarradiation":"--",
+		"UV":"0","precip_1hr_string":"0.00 in ( 0 mm)",
+		"precip_1hr_in":"0.00",
+		"precip_1hr_metric":" 0",
+		"precip_today_string":"0.00 in (0 mm)",
+		"precip_today_in":"0.00",
+		"precip_today_metric":"0",
+		"icon":"cloudy",
+		"icon_url":"http://icons.wxug.com/i/c/k/nt_cloudy.gif",
+		"forecast_url":"http://www.wunderground.com/US/TN/Nashville.html",
+		"history_url":"http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID=KTNNASHV210",
+		"ob_url":"http://www.wunderground.com/cgi-bin/findweather/getForecast?query=36.173122,-86.739845",
+		"nowcast":""
+	}
 }

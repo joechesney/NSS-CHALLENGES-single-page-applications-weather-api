@@ -1,7 +1,15 @@
 "use strict";
-const citySelector = document.getElementById("city");
-const weatherOutput = document.getElementById("output");
-const submitButton = document.getElementById("city-button");
+const inputBox = document.getElementById("input");
+const stateSelector = document.getElementById("state");
+const submitButton = document.getElementById("input-button");
+const output = document.getElementById("output");
+const locationOutput = document.getElementById("location");
+const currentTempOutput = document.getElementById("currentTemp");
+const maxTempOutput = document.getElementById("maxTemp");
+const minTempOutput = document.getElementById("minTemp");
+const descriptionOutput = document.getElementById("description");
+const windOutput = document.getElementById("wind");
+const humidityOutput = document.getElementById("humidity");
 
 const getKey = function(file){
   return new Promise(function(resolve, reject){
@@ -18,13 +26,13 @@ const getKey = function(file){
   });
 };
 
-const getWeather = function(city){
-  let weatherData = new Promise(function(resolve, reject){
+const getWeather = function(city, state){
+  return new Promise(function(resolve, reject){
     let key = getKey('../apiKey.json');
     let weatherXHR = new XMLHttpRequest();
     key.then( function(keyData){
-      // weatherXHR.open("GET", `http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=${data}`);
-      weatherXHR.open("GET", `http://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${keyData}`);      
+      // weatherXHR.open("GET", `http://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${keyData}`); 
+      weatherXHR.open("GET", `http://api.wunderground.com/api/${keyData}/conditions/q/${state}/${city}.json`);
       weatherXHR.send();
     });
     weatherXHR.addEventListener("load", function(){
@@ -32,25 +40,40 @@ const getWeather = function(city){
       console.log("event", weather);
       resolve(weather);
     });
-    weatherData.then(function(chups){
-      // something here
-    });
+    
   });
 };
 
 const printWeather = function(){
-  let city = citySelector.value;
-  console.log(getWeather(city));
-  // getWeather(city).then(function(info){
-  //   console.log("info", info);
-  // });
-  // console.log("bunchOfWeather",bunchOfWeather);
-  let temperatureDiv = document.createElement("div");
-
-  weatherOutput.innerHTML = city;
+  let city = inputBox.value;
+  let state = stateSelector.value;
+  let x = "weatherData.current_observation";
+  getWeather(city, state).then(function(weatherData){
+    console.log(weatherData);
+    locationOutput.innerHTML = weatherData.current_observation.display_location.full;
+    currentTempOutput.innerHTML = weatherData.current_observation.temp_f;
+    // minTempOutput.innerHTML = weatherData.current_observation.feelslike_f;
+    // maxTempOutput.innerHTML = weatherData.current_observation.feelslike_f;
+    descriptionOutput.innerHTML = weatherData.current_observation.weather;
+    windOutput.innerHTML = weatherData.current_observation.wind_mph + weatherData.current_observation.wind_dir;
+    humidityOutput.innerHTML = weatherData.current_observation.relative_humidity;
+    // min
+    // max
+    //descr
+    // wind
+    //humid
+    descriptionOutput.style.backgroundImage = `url('${weatherData.current_observation.icon_url}')`;
+    descriptionOutput.style.height = "50px";
+    descriptionOutput.style.backgroundRepeat = "no-repeat";
+    let icon = document.createElement("img");
+    icon.src = `${weatherData.current_observation.icon_url}`;
+    output.appendChild(icon);
+  });
+  
 };
-//api.openweathermap.org/data/2.5/weather?q={city name}
 
 submitButton.addEventListener("click", function() {
   printWeather();
 });
+
+//"75d5046b24a7a2f8106b0879bd41f129"
