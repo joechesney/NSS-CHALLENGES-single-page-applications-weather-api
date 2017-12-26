@@ -10,15 +10,27 @@
 </head>
 <body>
   <h1>Weather</h1>
-  <input id="city" type="text">
-  <button id="city-button">Submit</button>
+  <input id="input" type="text">
+  <button id="input-button">Submit</button>
   <br>
+  <select id="state">
+    <option value="TN">TN</option>
+    <!-- <option value="current">Current</option>
+    <option value="five-day">Mercedes</option> -->
+  </select>
   <select id="type-of-forecast">
     <option value="select">Select Type</option>
     <option value="current">Current</option>
     <option value="five-day">Mercedes</option>
   </select>
   <div id="output">
+    <div id="location"></div>
+    <div id="description"></div>
+    <div id="currentTemp"></div>
+    <div id="maxTemp"></div>
+    <div id="minTemp"></div>
+    <div id="wind"></div>
+    <div id="humidity"></div> 
 
   </div>
   <script src="dist/bundle.js"></script>
