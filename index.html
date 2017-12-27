@@ -19,12 +19,12 @@
     <option value="five-day">Mercedes</option> -->
   </select>
   <select id="type-of-forecast">
+    <option value="forecast">3 Day Forecast</option>
     <option value="conditions">Current</option>
     <option value="hourly">Hourly</option>    
-    <option value="forecast">3 Day Forecast</option>
     <option value="forecast10day">10 Day Forecast</option>
   </select>
-  <div id="output">
+  <div id="currentOutput">
     <h3 id="location"></h3>
     <div id="description"></div>
     <div id="currentTemp"></div>
@@ -32,6 +32,9 @@
     <div id="minTemp"></div>
     <div id="wind"></div>
     <div id="humidity"></div> 
+
+  </div>
+  <div id="dailyOutput">
 
   </div>
   <script src="dist/bundle.js"></script>

@@ -4,7 +4,8 @@ const stateSelector = document.getElementById("state");
 const submitButton = document.getElementById("input-button");
 const forecastTypeSelector = document.getElementById("type-of-forecast");
 
-const output = document.getElementById("output");
+const output = document.getElementById("currentOutput");
+const dailyOutput = document.getElementById("dailyOutput");
 const locationOutput = document.getElementById("location");
 const currentTempOutput = document.getElementById("currentTemp");
 const maxTempOutput = document.getElementById("maxTemp");
@@ -70,8 +71,16 @@ const printWeather = function(){
 
   } else if(type === "forecast" || type === "forecast10day"){
     getWeather(city, state, type).then(function(weatherData){  
-          
-      locationOutput.innerHTML = weatherData.forecast.simpleforecast.forecastday[0].date.pretty;
+      weatherData.forecast.txt_forecast.forecastday.forEach(function(day){
+        let weatherCard = "<div class='dayCard'>";
+        weatherCard += `<div class='center'>${day.title}</div> `;
+        weatherCard += `<img src='${day.icon_url}'>`;
+        weatherCard += `<div>${day.fcttext}</div>`;
+
+        weatherCard += "</div>";        
+        dailyOutput.innerHTML += weatherCard;
+      });
+      // locationOutput.innerHTML = weatherData.forecast.simpleforecast.forecastday[0].date.pretty;
 
     });
   }
