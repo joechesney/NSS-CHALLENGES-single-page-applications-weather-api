@@ -2,7 +2,10 @@
 const inputBox = document.getElementById("input");
 const stateSelector = document.getElementById("state");
 const submitButton = document.getElementById("input-button");
-const output = document.getElementById("output");
+const forecastTypeSelector = document.getElementById("type-of-forecast");
+
+const output = document.getElementById("currentOutput");
+const dailyOutput = document.getElementById("dailyOutput");
 const locationOutput = document.getElementById("location");
 const currentTempOutput = document.getElementById("currentTemp");
 const maxTempOutput = document.getElementById("maxTemp");
@@ -26,13 +29,13 @@ const getKey = function(file){
   });
 };
 
-const getWeather = function(city, state){
+const getWeather = function(city, state, type){
   return new Promise(function(resolve, reject){
     let key = getKey('../apiKey.json');
     let weatherXHR = new XMLHttpRequest();
     key.then( function(keyData){
       // weatherXHR.open("GET", `http://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${keyData}`); 
-      weatherXHR.open("GET", `http://api.wunderground.com/api/${keyData}/conditions/q/${state}/${city}.json`);
+      weatherXHR.open("GET", `http://api.wunderground.com/api/${keyData}/${type}/q/${state}/${city}.json`);
       weatherXHR.send();
     });
     weatherXHR.addEventListener("load", function(){
@@ -47,29 +50,40 @@ const getWeather = function(city, state){
 const printWeather = function(){
   let city = inputBox.value;
   let state = stateSelector.value;
-  let x = "weatherData.current_observation";
-  getWeather(city, state).then(function(weatherData){
-    console.log(weatherData);
-    locationOutput.innerHTML = weatherData.current_observation.display_location.full;
-    currentTempOutput.innerHTML = weatherData.current_observation.temp_f;
-    // minTempOutput.innerHTML = weatherData.current_observation.feelslike_f;
-    // maxTempOutput.innerHTML = weatherData.current_observation.feelslike_f;
-    descriptionOutput.innerHTML = weatherData.current_observation.weather;
-    windOutput.innerHTML = weatherData.current_observation.wind_mph + weatherData.current_observation.wind_dir;
-    humidityOutput.innerHTML = weatherData.current_observation.relative_humidity;
-    // min
-    // max
-    //descr
-    // wind
-    //humid
-    descriptionOutput.style.backgroundImage = `url('${weatherData.current_observation.icon_url}')`;
-    descriptionOutput.style.height = "50px";
-    descriptionOutput.style.backgroundRepeat = "no-repeat";
-    let icon = document.createElement("img");
-    icon.src = `${weatherData.current_observation.icon_url}`;
-    output.appendChild(icon);
-  });
-  
+  let type = forecastTypeSelector.value;
+  if(type === "conditions"){
+    let x = "weatherData.current_observation";
+    getWeather(city, state, type).then(function(weatherData){
+      console.log(weatherData);
+      locationOutput.innerHTML = weatherData.current_observation.display_location.full;
+      currentTempOutput.innerHTML = `${weatherData.current_observation.temp_f}&deg;`;
+      descriptionOutput.innerHTML = weatherData.current_observation.weather;
+      windOutput.innerHTML = `Wind: ${weatherData.current_observation.wind_mph}, ${weatherData.current_observation.wind_dir}`;
+      humidityOutput.innerHTML = `Humidity: ${weatherData.current_observation.relative_humidity}`;
+      
+      // descriptionOutput.style.backgroundImage = `url('${weatherData.current_observation.icon_url}')`;
+      // descriptionOutput.style.height = "50px";
+      // descriptionOutput.style.backgroundRepeat = "no-repeat";
+      let icon = document.createElement("img");
+      icon.src = `${weatherData.current_observation.icon_url}`;
+      output.appendChild(icon);
+    });
+
+  } else if(type === "forecast" || type === "forecast10day"){
+    getWeather(city, state, type).then(function(weatherData){  
+      weatherData.forecast.txt_forecast.forecastday.forEach(function(day){
+        let weatherCard = "<div class='dayCard'>";
+        weatherCard += `<div class='center'>${day.title}</div> `;
+        weatherCard += `<img src='${day.icon_url}'>`;
+        weatherCard += `<div>${day.fcttext}</div>`;
+
+        weatherCard += "</div>";        
+        dailyOutput.innerHTML += weatherCard;
+      });
+      // locationOutput.innerHTML = weatherData.forecast.simpleforecast.forecastday[0].date.pretty;
+
+    });
+  }
 };
 
 submitButton.addEventListener("click", function() {
