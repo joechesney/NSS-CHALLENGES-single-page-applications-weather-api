@@ -50,25 +50,31 @@ const printWeather = function(){
   let city = inputBox.value;
   let state = stateSelector.value;
   let type = forecastTypeSelector.value;
-  let x = "weatherData.current_observation";
-  getWeather(city, state, type).then(function(weatherData){
-    console.log(weatherData);
-    locationOutput.innerHTML = weatherData.current_observation.display_location.full;
-    currentTempOutput.innerHTML = `${weatherData.current_observation.temp_f}&deg;`;
-    //min
-    //max
-    descriptionOutput.innerHTML = weatherData.current_observation.weather;
-    windOutput.innerHTML = `Wind: ${weatherData.current_observation.wind_mph}, ${weatherData.current_observation.wind_dir}`;
-    humidityOutput.innerHTML = `Humidity: ${weatherData.current_observation.relative_humidity}`;
-    
-    // descriptionOutput.style.backgroundImage = `url('${weatherData.current_observation.icon_url}')`;
-    // descriptionOutput.style.height = "50px";
-    // descriptionOutput.style.backgroundRepeat = "no-repeat";
-    let icon = document.createElement("img");
-    icon.src = `${weatherData.current_observation.icon_url}`;
-    output.appendChild(icon);
-  });
-  
+  if(type === "conditions"){
+    let x = "weatherData.current_observation";
+    getWeather(city, state, type).then(function(weatherData){
+      console.log(weatherData);
+      locationOutput.innerHTML = weatherData.current_observation.display_location.full;
+      currentTempOutput.innerHTML = `${weatherData.current_observation.temp_f}&deg;`;
+      descriptionOutput.innerHTML = weatherData.current_observation.weather;
+      windOutput.innerHTML = `Wind: ${weatherData.current_observation.wind_mph}, ${weatherData.current_observation.wind_dir}`;
+      humidityOutput.innerHTML = `Humidity: ${weatherData.current_observation.relative_humidity}`;
+      
+      // descriptionOutput.style.backgroundImage = `url('${weatherData.current_observation.icon_url}')`;
+      // descriptionOutput.style.height = "50px";
+      // descriptionOutput.style.backgroundRepeat = "no-repeat";
+      let icon = document.createElement("img");
+      icon.src = `${weatherData.current_observation.icon_url}`;
+      output.appendChild(icon);
+    });
+
+  } else if(type === "forecast" || type === "forecast10day"){
+    getWeather(city, state, type).then(function(weatherData){  
+          
+      locationOutput.innerHTML = weatherData.forecast.simpleforecast.forecastday[0].date.pretty;
+
+    });
+  }
 };
 
 submitButton.addEventListener("click", function() {

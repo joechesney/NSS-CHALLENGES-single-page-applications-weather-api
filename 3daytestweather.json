@@ -6,9 +6,9 @@
   "features": {
   "forecast": 1
   }
-	}
-		,
-	"forecast":{
+	},
+  "forecast":
+  {
 		"txt_forecast": {
 		"date":"9:48 PM CST",
 		"forecastday": [
@@ -95,25 +95,26 @@
 		},
 		"simpleforecast": {
 		"forecastday": [
-		{"date":{
-	"epoch":"1514250000",
-	"pretty":"7:00 PM CST on December 25, 2017",
-	"day":25,
-	"month":12,
-	"year":2017,
-	"yday":358,
-	"hour":19,
-	"min":"00",
-	"sec":0,
-	"isdst":"0",
-	"monthname":"December",
-	"monthname_short":"Dec",
-	"weekday_short":"Mon",
-	"weekday":"Monday",
-	"ampm":"PM",
-	"tz_short":"CST",
-	"tz_long":"America/Chicago"
-},
+		{
+    "date":{
+    "epoch":"1514250000",
+    "pretty":"7:00 PM CST on December 25, 2017",
+    "day":25,
+    "month":12,
+    "year":2017,
+    "yday":358,
+    "hour":19,
+    "min":"00",
+    "sec":0,
+    "isdst":"0",
+    "monthname":"December",
+    "monthname_short":"Dec",
+    "weekday_short":"Mon",
+    "weekday":"Monday",
+    "ampm":"PM",
+    "tz_short":"CST",
+    "tz_long":"America/Chicago"
+    },
 		"period":1,
 		"high": {
 		"fahrenheit":"34",
@@ -187,7 +188,7 @@
 	"ampm":"PM",
 	"tz_short":"CST",
 	"tz_long":"America/Chicago"
-},
+ },
 		"period":2,
 		"high": {
 		"fahrenheit":"41",
