@@ -30,6 +30,7 @@ const getKey = function(file){
 };
 
 const getWeather = function(city, state, type){
+  
   return new Promise(function(resolve, reject){
     let key = getKey('../apiKey.json');
     let weatherXHR = new XMLHttpRequest();
@@ -71,23 +72,44 @@ const printWeather = function(){
 
   } else if(type === "forecast" || type === "forecast10day"){
     getWeather(city, state, type).then(function(weatherData){  
-      weatherData.forecast.txt_forecast.forecastday.forEach(function(day){
+      weatherData.forecast.simpleforecast.forecastday.forEach(function(day){
         let weatherCard = "<div class='dayCard'>";
-        weatherCard += `<div class='center'>${day.title}</div> `;
-        weatherCard += `<img src='${day.icon_url}'>`;
-        weatherCard += `<div>${day.fcttext}</div>`;
+        weatherCard += `<div class='center'>${day.date.weekday}</div> `;
+        weatherCard += `<div class='lilimg'><img src='${day.icon_url}'></div>`;
+        weatherCard += `<div>High: ${day.high.fahrenheit}&deg;F`;
+        weatherCard += `<div>Low: ${day.low.fahrenheit}&deg;F`;
+        weatherCard += `<div>${day.conditions}</div>`;
 
         weatherCard += "</div>";        
         dailyOutput.innerHTML += weatherCard;
       });
-      // locationOutput.innerHTML = weatherData.forecast.simpleforecast.forecastday[0].date.pretty;
+    });
+  } else if(type === "hourly"){
+    getWeather(city, state, type).then(function(weatherData){ 
+      dailyOutput.innerHTML = `${weatherData.hourly_forecast[0].weekday_name}`; 
+      weatherData.hourly_forecast.forEach(function(hour){
+        let weatherCard = "<div class='hourCard'>";
+        weatherCard += `<div class='center'>${hour.FCTTIME.civil}</div> `;
+        weatherCard += `<div class='lilimg'><img src='${hour.icon_url}'></div>`;
+        weatherCard += `<div>${hour.temp.english}</div>`;
+        weatherCard += `<div>${hour.condition}</div>`;
 
+        weatherCard += "</div>";        
+        dailyOutput.innerHTML += weatherCard;
+      });
     });
   }
 };
 
+
+
 submitButton.addEventListener("click", function() {
   printWeather();
+});
+inputBox.addEventListener("keyup", function(e) {
+  if(e.keyCode === 13){
+    printWeather();
+  }
 });
 
 //"75d5046b24a7a2f8106b0879bd41f129"

@@ -5,6 +5,7 @@
 #dailyOutput{
   display: flex;
   flex-wrap: wrap;
+  
 }
 
 .dayCard{
@@ -14,9 +15,20 @@
   border: 1px solid black;
   border-radius: 5px;
 }
-.dayCard img{
+div.lilimg {
+  width: 100%;
+}
+div.lilimg img{
   margin: 0 auto;
 }
 .center{
   text-align: center;
+}
+
+.hourCard{
+  width: 10%;
+  padding: .2em;
+  margin: .2em;
+  border: 1px solid black;
+  border-radius: 5px;
 }
