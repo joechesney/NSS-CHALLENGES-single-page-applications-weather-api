@@ -9,34 +9,21 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 </head>
 <body>
-  <h1>Weather</h1>
-  <input id="input" type="text">
-  <button id="input-button">Submit</button>
-  <br>
-  <select id="state">
-    <option value="TN">TN</option>
-    <!-- <option value="current">Current</option>
-    <option value="five-day">Mercedes</option> -->
-  </select>
-  <select id="type-of-forecast">
-    <option value="forecast">3 Day Forecast</option>
-    <option value="conditions">Current</option>
-    <option value="hourly">Hourly</option>    
-    <option value="forecast10day">10 Day Forecast</option>
-  </select>
-  <div id="currentOutput">
-    <h3 id="location"></h3>
-    <div id="description"></div>
-    <div id="currentTemp"></div>
-    <div id="maxTemp"></div>
-    <div id="minTemp"></div>
-    <div id="wind"></div>
-    <div id="humidity"></div> 
-
+  <div id="inputs">
+    <h1>Weather</h1>
+    <input id="city-selector" type="text" placeholder="City">
+    <button id="submit-button">Submit</button>
+    <br>
+    <input id="state-selector" type="text" placeholder="State">
+    <select id="type-of-forecast">
+      <option value="forecast">3 Day Forecast</option>
+      <option value="conditions">Current</option>
+      <option value="hourly">Hourly</option>    
+      <option value="forecast10day">10 Day Forecast</option>
+    </select>
   </div>
-  <div id="dailyOutput">
-
-  </div>
+  <div id="weatherOutput"></div>
+  
   <script src="dist/bundle.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
