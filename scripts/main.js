@@ -1,18 +1,11 @@
 "use strict";
-const inputBox = document.getElementById("input");
-const stateSelector = document.getElementById("state");
-const submitButton = document.getElementById("input-button");
+const citySelector = document.getElementById("city-selector");
+const stateSelector = document.getElementById("state-selector");
+const submitButton = document.getElementById("submit-button");
 const forecastTypeSelector = document.getElementById("type-of-forecast");
 
-const output = document.getElementById("currentOutput");
-const dailyOutput = document.getElementById("dailyOutput");
-const locationOutput = document.getElementById("location");
-const currentTempOutput = document.getElementById("currentTemp");
-const maxTempOutput = document.getElementById("maxTemp");
-const minTempOutput = document.getElementById("minTemp");
-const descriptionOutput = document.getElementById("description");
-const windOutput = document.getElementById("wind");
-const humidityOutput = document.getElementById("humidity");
+const weatherOutput = document.getElementById("weatherOutput");
+
 
 const getKey = function(file){
   return new Promise(function(resolve, reject){
@@ -21,7 +14,7 @@ const getKey = function(file){
     keyRequest.open("GET", file);
     keyRequest.addEventListener("load", function(){
       if(keyRequest.status < 400){
-        aK = JSON.parse(keyRequest.response).key;
+        aK = JSON.parse(keyRequest.response).theKey;
         resolve(aK);
       }
     });
@@ -30,11 +23,10 @@ const getKey = function(file){
 };
 
 const getWeather = function(city, state, type){
-  
   return new Promise(function(resolve, reject){
     let key = getKey('../apiKey.json');
     let weatherXHR = new XMLHttpRequest();
-    key.then( function(keyData){
+    key.then(function(keyData){
       // weatherXHR.open("GET", `http://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${keyData}`); 
       weatherXHR.open("GET", `http://api.wunderground.com/api/${keyData}/${type}/q/${state}/${city}.json`);
       weatherXHR.send();
@@ -44,32 +36,29 @@ const getWeather = function(city, state, type){
       console.log("event", weather);
       resolve(weather);
     });
-    
   });
 };
 
 const printWeather = function(){
-  let city = inputBox.value;
+
+  let city = citySelector.value;
   let state = stateSelector.value;
   let type = forecastTypeSelector.value;
+  if(city === "" || state === ""){
+    alert("All fields are required. Please enter a city and state please.");
+    return;
+  }
   if(type === "conditions"){
-    let x = "weatherData.current_observation";
     getWeather(city, state, type).then(function(weatherData){
-      console.log(weatherData);
-      locationOutput.innerHTML = weatherData.current_observation.display_location.full;
-      currentTempOutput.innerHTML = `${weatherData.current_observation.temp_f}&deg;`;
-      descriptionOutput.innerHTML = weatherData.current_observation.weather;
-      windOutput.innerHTML = `Wind: ${weatherData.current_observation.wind_mph}, ${weatherData.current_observation.wind_dir}`;
-      humidityOutput.innerHTML = `Humidity: ${weatherData.current_observation.relative_humidity}`;
-      
-      // descriptionOutput.style.backgroundImage = `url('${weatherData.current_observation.icon_url}')`;
-      // descriptionOutput.style.height = "50px";
-      // descriptionOutput.style.backgroundRepeat = "no-repeat";
-      let icon = document.createElement("img");
-      icon.src = `${weatherData.current_observation.icon_url}`;
-      output.appendChild(icon);
+      let currentWeather = `<div class='currentWeather'>`;
+      currentWeather += `<div><strong>${weatherData.current_observation.display_location.full}</strong><div>`;
+      currentWeather += `<img class='' src='${weatherData.current_observation.icon_url}'>`;
+      currentWeather += `<div class=''>Currently: ${weatherData.current_observation.temp_f}&deg;F</div>`;
+      currentWeather += `<div class=''>${weatherData.current_observation.weather}`;
+      currentWeather += `<div class=''> Wind: ${weatherData.current_observation.wind_dir}, at ${weatherData.current_observation.wind_mph}mph`;
+      currentWeather += `<div class=''>Humidity: ${weatherData.current_observation.relative_humidity}`;
+      weatherOutput.innerHTML = currentWeather;
     });
-
   } else if(type === "forecast" || type === "forecast10day"){
     getWeather(city, state, type).then(function(weatherData){  
       weatherData.forecast.simpleforecast.forecastday.forEach(function(day){
@@ -79,37 +68,37 @@ const printWeather = function(){
         weatherCard += `<div>High: ${day.high.fahrenheit}&deg;F`;
         weatherCard += `<div>Low: ${day.low.fahrenheit}&deg;F`;
         weatherCard += `<div>${day.conditions}</div>`;
-
         weatherCard += "</div>";        
-        dailyOutput.innerHTML += weatherCard;
+        weatherOutput.innerHTML += weatherCard;
       });
     });
   } else if(type === "hourly"){
     getWeather(city, state, type).then(function(weatherData){ 
-      dailyOutput.innerHTML = `${weatherData.hourly_forecast[0].weekday_name}`; 
+      weatherOutput.innerHTML = `${weatherData.hourly_forecast[0].weekday_name}`; 
       weatherData.hourly_forecast.forEach(function(hour){
         let weatherCard = "<div class='hourCard'>";
         weatherCard += `<div class='center'>${hour.FCTTIME.civil}</div> `;
-        weatherCard += `<div class='lilimg'><img src='${hour.icon_url}'></div>`;
-        weatherCard += `<div>${hour.temp.english}</div>`;
+        weatherCard += `<img src='${hour.icon_url}'>`;
+        weatherCard += `<div>${hour.temp.english}&deg;F</div>`;
         weatherCard += `<div>${hour.condition}</div>`;
-
         weatherCard += "</div>";        
-        dailyOutput.innerHTML += weatherCard;
+        weatherOutput.innerHTML += weatherCard;
       });
     });
   }
 };
 
-
-
 submitButton.addEventListener("click", function() {
   printWeather();
 });
-inputBox.addEventListener("keyup", function(e) {
+const enterPress = function(e){
   if(e.keyCode === 13){
     printWeather();
   }
-});
+};
+citySelector.addEventListener("keyup", enterPress);
+stateSelector.addEventListener("keyup", enterPress);
+forecastTypeSelector.addEventListener("keyup", enterPress);
+
 
 //"75d5046b24a7a2f8106b0879bd41f129"
