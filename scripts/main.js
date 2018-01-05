@@ -5,8 +5,9 @@ const submitButton = document.getElementById("submit-button");
 const forecastTypeSelector = document.getElementById("type-of-forecast");
 
 const weatherOutput = document.getElementById("weatherOutput");
+const weatherHeading = document.getElementById("weatherHeading");
 
-
+//  model
 const getKey = function(file){
   return new Promise(function(resolve, reject){
     let keyRequest = new XMLHttpRequest();
@@ -21,14 +22,15 @@ const getKey = function(file){
     keyRequest.send();  
   });
 };
-
+// controller
 const getWeather = function(city, state, type){
   return new Promise(function(resolve, reject){
     let key = getKey('../apiKey.json');
     let weatherXHR = new XMLHttpRequest();
     key.then(function(keyData){
       // weatherXHR.open("GET", `http://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${keyData}`); 
-      weatherXHR.open("GET", `http://api.wunderground.com/api/${keyData}/${type}/q/${state}/${city}.json`);
+      // weatherXHR.open("GET", `http://api.wunderground.com/api/${keyData}/${type}/q/${state}/${city}.json`);
+      weatherXHR.open("GET", "../hourlytestweather.json");
       weatherXHR.send();
     });
     weatherXHR.addEventListener("load", function(){
@@ -39,8 +41,9 @@ const getWeather = function(city, state, type){
   });
 };
 
+// view
 const printWeather = function(){
-
+  weatherOutput.innerHTML = "";
   let city = citySelector.value;
   let state = stateSelector.value;
   let type = forecastTypeSelector.value;
@@ -50,6 +53,7 @@ const printWeather = function(){
   }
   if(type === "conditions"){
     getWeather(city, state, type).then(function(weatherData){
+      weatherHeading.innerHTML = `<h2>${weatherData.current_observation.observation_time_rfc822}</h2>`;            
       let currentWeather = `<div class='currentWeather'>`;
       currentWeather += `<div><strong>${weatherData.current_observation.display_location.full}</strong><div>`;
       currentWeather += `<img class='' src='${weatherData.current_observation.icon_url}'>`;
@@ -61,6 +65,7 @@ const printWeather = function(){
     });
   } else if(type === "forecast" || type === "forecast10day"){
     getWeather(city, state, type).then(function(weatherData){  
+      weatherHeading.innerHTML = '';      
       weatherData.forecast.simpleforecast.forecastday.forEach(function(day){
         let weatherCard = "<div class='dayCard'>";
         weatherCard += `<div class='center'>${day.date.weekday}</div> `;
@@ -74,7 +79,8 @@ const printWeather = function(){
     });
   } else if(type === "hourly"){
     getWeather(city, state, type).then(function(weatherData){ 
-      weatherOutput.innerHTML = `${weatherData.hourly_forecast[0].weekday_name}`; 
+      weatherOutput.innerHTML = '';
+      weatherHeading.innerHTML = `<h2>${weatherData.hourly_forecast[0].FCTTIME.weekday_name}</h2><br>`; 
       weatherData.hourly_forecast.forEach(function(hour){
         let weatherCard = "<div class='hourCard'>";
         weatherCard += `<div class='center'>${hour.FCTTIME.civil}</div> `;
@@ -88,6 +94,7 @@ const printWeather = function(){
   }
 };
 
+// controller
 submitButton.addEventListener("click", function() {
   printWeather();
 });
@@ -100,5 +107,3 @@ citySelector.addEventListener("keyup", enterPress);
 stateSelector.addEventListener("keyup", enterPress);
 forecastTypeSelector.addEventListener("keyup", enterPress);
 
-
-//"75d5046b24a7a2f8106b0879bd41f129"
